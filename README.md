@@ -8,7 +8,7 @@ Working internet connection and `git` installed.
 
 ## Installation
 
-Make the bash install script executable and run it:
+Make the [install script](./install.sh) executable and run it:
 
 ```
 chmod +x install.sh
@@ -17,5 +17,5 @@ chmod +x install.sh
 
 ## License
 
-MIT License, see `LICENSE` for more details.
+MIT License, see [LICENSE](./LICENSE) for more details.
 
