@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # functions
-wget_github() { wget https://raw.githubusercontent.com/$1 $2 }
-wget2file() { wget_github $1 -O $2 }
-wget2dir() { wget_github $1 -P $2 }
+wget_github() { wget https://raw.githubusercontent.com/$1 $2; }
+wget2file() { wget_github "$1" "-O $2"; }
+wget2dir() { wget_github "$1" "-P $2"; }
 
 # variables
 terminal=${PWD}/conf/terminal/
