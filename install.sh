@@ -6,11 +6,11 @@ wget2file() { wget_github "$1" "-O $2"; }
 wget2dir() { wget_github "$1" "-P $2"; }
 
 # variables
-terminal=${PWD}/conf/terminal/
-emacs=${PWD}/conf/terminal/
-emacsd=$HOME/.emacs.d/
-emacs_pkg=$emacsd/el/
-emacs_themes=$emacsd/themes/
+terminal=${PWD}/conf/terminal
+emacs=${PWD}/conf/emacs
+emacsd=$HOME/.emacs.d
+emacs_pkg=$emacsd/el
+emacs_themes=$emacsd/themes
 
 # configure bash
 cp ${terminal}/.bashrc ${terminal}/.profile $HOME/.
@@ -27,14 +27,18 @@ cp ${emacs}/.emacs $HOME/.
 mkdir -p $emacs_pkg
 mkdir -p $emacs_themes
 
+install_emacs_pkg() {
+    wget2file "${2}/LICENSE" "$emacsd/${1}_license"
+    wget2dir "${2}/${1}.el" "$emacs_pkg/"
+}
+
+# install required emacs packages
+install_emacs_pkg "dash" "magnars/dash.el/master"
+install_emacs_pkg "autothemer" "jasonm23/autothemer/master"
+install_emacs_pkg "neotree" "jaypei/emacs-neotree/dev"
+
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"
-wget2file "$gruvbox_repo/LICENSE" "$emacsd/gruvbox_license"
-wget2dir "$gruvbox_repo/gruvbox.el" "$emacs_pkg/"
+install_emacs_pkg "gruvbox" "$gruvbox_repo"
 wget2dir "$gruvbox_repo/gruvbox-theme.el" "$emacs_themes/"
-
-# install neotree
-neotree_repo="jaypei/emacs-neotree/dev"
-wget2file "$neotree_repo/LICENSE" "$emacsd/neotree_license"
-wget2dir "$neotree_repo/neotree.el" "$emacs_pkg/"
 
