@@ -6,7 +6,9 @@
       )
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'gruvbox t)
+;(load-theme 'gruvbox-dark-soft t)
+;(load-theme 'gruvbox-dark-medium t)
+(load-theme 'gruvbox-dark-hard t)
 
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)

@@ -27,6 +27,19 @@ cp ${emacs}/.emacs $HOME/.
 mkdir -p $emacs_pkg
 mkdir -p $emacs_themes
 
+# create custom terminfo for emacs, to get true color support for terminal emacs
+# for more info, see:
+# https://www.gnu.org/software/emacs/manual/html_node/efaq/Colors-on-a-TTY.html
+cat <<EOF > $emacsd/terminfo-custom.src
+xterm-emacs|xterm with 24-bit direct color mode for Emacs,
+  use=xterm-256color,
+  setb24=\E[48\:2\:\:%p1%{65536}%/%d\:%p1%{256}%/%{255}%&\
+     %d\:%p1%{255}%&%dm,
+  setf24=\E[38\:2\:\:%p1%{65536}%/%d\:%p1%{256}%/%{255}%&\
+     %d\:%p1%{255}%&%dm,
+EOF
+tic -x -o ~/.terminfo $emacsd/terminfo-custom.src
+
 install_emacs_pkg() {
     wget2file "${2}/LICENSE" "$emacsd/${1}_license"
     wget2dir "${2}/${1}.el" "$emacs_pkg/"
@@ -40,5 +53,12 @@ install_emacs_pkg "neotree" "jaypei/emacs-neotree/dev"
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"
 install_emacs_pkg "gruvbox" "$gruvbox_repo"
-wget2dir "$gruvbox_repo/gruvbox-theme.el" "$emacs_themes/"
+wget2dir "$gruvbox_repo/gruvbox-dark-soft-theme.el" "$emacs_themes/"
+wget2dir "$gruvbox_repo/gruvbox-dark-medium-theme.el" "$emacs_themes/"
+wget2dir "$gruvbox_repo/gruvbox-dark-hard-theme.el" "$emacs_themes/"
+
+# also install emacs configuration for root
+sudo tic -x -o /root/.terminfo $emacsd/terminfo-custom.src
+sudo cp $HOME/.emacs /root/
+sudo cp -r $HOME/.emacs.d  /root/
 
