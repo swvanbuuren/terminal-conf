@@ -18,6 +18,11 @@
 ;; use customized linum-format: add a addition space after the line number                                                                      
 (setq linum-format (lambda (line) (propertize (format (let ((w (length (number-to-string (count-lines (point-min) (point-max)))))) (concat "%" (number-to-string w) "d ")) line) 'face 'linum)))
 
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
 (defvar running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 (line-number-mode t)
 (column-number-mode t)

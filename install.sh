@@ -30,6 +30,7 @@ mkdir -p $emacs_themes
 # create custom terminfo for emacs, to get true color support for terminal emacs
 # for more info, see:
 # https://www.gnu.org/software/emacs/manual/html_node/efaq/Colors-on-a-TTY.html
+# this should work for emacs 26.1 and later
 cat <<EOF > $emacsd/terminfo-custom.src
 xterm-emacs|xterm with 24-bit direct color mode for Emacs,
   use=xterm-256color,
@@ -49,6 +50,8 @@ install_emacs_pkg() {
 install_emacs_pkg "dash" "magnars/dash.el/master"
 install_emacs_pkg "autothemer" "jasonm23/autothemer/master"
 install_emacs_pkg "neotree" "jaypei/emacs-neotree/dev"
+install_emacs_pkg "markdown-mode" "defunkt/markdown-mode/master"
+
 
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"
