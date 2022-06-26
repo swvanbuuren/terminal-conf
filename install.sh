@@ -51,7 +51,7 @@ install_emacs_pkg "dash" "magnars/dash.el/master"
 install_emacs_pkg "autothemer" "jasonm23/autothemer/master"
 install_emacs_pkg "neotree" "jaypei/emacs-neotree/dev"
 install_emacs_pkg "markdown-mode" "defunkt/markdown-mode/master"
-
+install_emacs_pkg "yaml-mode" "yoshiki/yaml-mode/master"
 
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"

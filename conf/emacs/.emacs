@@ -13,15 +13,23 @@
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
 
-(require 'linum)
-(global-linum-mode 1)
-;; use customized linum-format: add a addition space after the line number                                                                      
-(setq linum-format (lambda (line) (propertize (format (let ((w (length (number-to-string (count-lines (point-min) (point-max)))))) (concat "%" (number-to-string w) "d ")) line) 'face 'linum)))
-
+; markdown support
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+; yaml suppport
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-hook 'yaml-mode-hook
+	  '(lambda ()
+	     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+(require 'linum)
+(global-linum-mode 1)
+;; use customized linum-format: add a addition space after the line number                                                                      
+(setq linum-format (lambda (line) (propertize (format (let ((w (length (number-to-string (count-lines (point-min) (point-max)))))) (concat "%" (number-to-string w) "d ")) line) 'face 'linum)))
 
 (defvar running-xemacs (string-match "XEmacs\\|Lucid" emacs-version))
 (line-number-mode t)
