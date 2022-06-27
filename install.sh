@@ -46,7 +46,7 @@ if [ "$emacs_version" -lt 26.1]; then
     sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
 fi
 # if emacs supports true colors natively, make concurrent modifications to .bashrc
-if [ "$emacs_version" -lt 26.1]; then
+if [ "$emacs_version" -ge 27.1]; then
     sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bashrc
 fi
 
