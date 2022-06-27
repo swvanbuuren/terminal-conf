@@ -40,6 +40,16 @@ xterm-emacs|xterm with 24-bit direct color mode for Emacs,
      %d\:%p1%{255}%&%dm,
 EOF
 tic -x -o ~/.terminfo $emacsd/terminfo-custom.src
+emacs_version=$(dpkg -s emacs | grep Version: | grep -oP '(?<=\d\:).*(?=\+)')
+# if emacs does not support true colors disable special commands in .bashrc
+if [ "$emacs_version" -lt 26.1]; then
+    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
+fi
+# if emacs supports true colors natively, make concurrent modifications to .bashrc
+if [ "$emacs_version" -lt 26.1]; then
+    sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bashrc
+fi
+
 
 install_emacs_pkg() {
     wget2file "${2}/LICENSE" "$emacsd/${1}_license"
