@@ -40,19 +40,27 @@ xterm-emacs|xterm with 24-bit direct color mode for Emacs,
      %d\:%p1%{255}%&%dm,
 EOF
 tic -x -o ~/.terminfo $emacsd/terminfo-custom.src
+# acquire emacs version
 emacs_version=$(dpkg -s emacs | grep Version: | grep -oP '(?<=\d\:).*(?=\+)')
+# acquire major and minor emacs version
+IFS=. read -r emacs_major emacs_minor <<< $emacs_version
+emacs_major=$(($emacs_major+0))
+emacs_minor=$(($emacs_minor+0))
 # if emacs does not support true colors disable special commands in .bashrc
-if [ "$emacs_version" -lt 26.1]; then
+if [[ $emacs_major -le 26 && $emacs_minor -lt 1 ]]; then
     sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
 fi
 # if emacs supports true colors natively, make concurrent modifications to .bashrc
-if [ "$emacs_version" -ge 27.1]; then
+if [[ $emacs_major -ge 27 && $emacs_minor -ge 1 ]]; then
     sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bashrc
 fi
 
-
 install_emacs_pkg() {
-    wget2file "${2}/LICENSE" "$emacsd/${1}_license"
+    if [ -z ${3+x} ]; then
+	wget2file "${2}/${3}" "$emacsd/${1}_license"
+    else
+	wget2file "${2}/LICENSE" "$emacsd/${1}_license"	
+    fi
     wget2dir "${2}/${1}.el" "$emacs_pkg/"
 }
 
@@ -60,8 +68,8 @@ install_emacs_pkg() {
 install_emacs_pkg "dash" "magnars/dash.el/master"
 install_emacs_pkg "autothemer" "jasonm23/autothemer/master"
 install_emacs_pkg "neotree" "jaypei/emacs-neotree/dev"
-install_emacs_pkg "markdown-mode" "defunkt/markdown-mode/master"
-install_emacs_pkg "yaml-mode" "yoshiki/yaml-mode/master"
+install_emacs_pkg "markdown-mode" "jrblevin/markdown-mode/master" "LICENSE.md"
+install_emacs_pkg "yaml-mode" "yoshiki/yaml-mode/master" "LICENSE.txt"
 
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"
