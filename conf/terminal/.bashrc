@@ -99,10 +99,6 @@ alias 'sudoemacs'='sudo TERM=xterm-emacs emacs -nw'
 alias 'ipscan'='sudo arp-scan --interface=eth0 --localnet'
 alias pip=pip3
 
-activate_venv () {
-    . /mnt/storage/work/python/00__venvs/$1/bin/activate
-}
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -123,20 +119,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# add auto to the PATH
-# source /mnt/storage/software/auto/07p/cmds/auto.env.sh
-
-# add texlive 201x to the PATH, MANPATH and the INFOPATH
-# export PATH=/usr/local/texlive/2018/bin/x86_64-linux:$PATH
-# export MANPATH=/usr/local/texlive/2018/texmf-dist/doc/man:$MANPATH
-# export INFOPATH=/usr/local/texlive/2018/texmf-dist/doc/info:$INFOPATH
-# unset TEXINPUTS
-# unset TEXMFCONFIG
-
 # add own scripts to the path
-export PATH=/home/sietze/bin:$PATH
-export PATH=/home/sietze/.local/bin:$PATH
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/keepassxc-libs/lib/x86_64-linux-gnu
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
 
