@@ -3,7 +3,7 @@
 # functions
 wget_github() { wget https://raw.githubusercontent.com/$1 $2; }
 wget2file() { wget_github "$1" "-O $2"; }
-wget2dir() { wget_github "$1" "-P $2"; }
+wget2dir() { wget_github "$1/$3" "-O $2/$3"; }
 
 # variables
 terminal=${PWD}/conf/terminal
@@ -41,19 +41,25 @@ xterm-emacs|xterm with 24-bit direct color mode for Emacs,
 EOF
 tic -x -o ~/.terminfo $emacsd/terminfo-custom.src
 emacs_version=$(dpkg -s emacs | grep Version: | grep -oP '(?<=\d\:).*(?=\+)')
-# if emacs does not support true colors disable special commands in .bashrc
-if [ "$emacs_version" -lt 26.1]; then
-    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
-fi
 # if emacs supports true colors natively, make concurrent modifications to .bashrc
-if [ "$emacs_version" -ge 27.1]; then
+if [ "$emacs_version" -ge 27.1 ]; then
+    echo "emacs v27.1 or newer detected"
     sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bashrc
 fi
-
+# if emacs does not support true colors; disable special commands in .bashrc
+if [ "$emacs_version" -lt 26.1 ] || [[ $(toe | grep -L '\-direct') ]]; then
+    echo "emacs older than v26.1 detectedm, true colors not supported!"
+    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
+fi
+# current terminal is incompatible with true colors
+if [[ $(toe | grep -L '\-direct') ]]; then
+    echo "terminal incompatible with XTerm, true colors not supported!"
+    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
+fi
 
 install_emacs_pkg() {
     wget2file "${2}/LICENSE" "$emacsd/${1}_license"
-    wget2dir "${2}/${1}.el" "$emacs_pkg/"
+    wget2dir "${2}" "$emacs_pkg" "${1}.el"
 }
 
 # install required emacs packages
@@ -66,9 +72,9 @@ install_emacs_pkg "yaml-mode" "yoshiki/yaml-mode/master"
 # install gruvbox
 gruvbox_repo="greduan/emacs-theme-gruvbox/master"
 install_emacs_pkg "gruvbox" "$gruvbox_repo"
-wget2dir "$gruvbox_repo/gruvbox-dark-soft-theme.el" "$emacs_themes/"
-wget2dir "$gruvbox_repo/gruvbox-dark-medium-theme.el" "$emacs_themes/"
-wget2dir "$gruvbox_repo/gruvbox-dark-hard-theme.el" "$emacs_themes/"
+wget2dir "$gruvbox_repo" "$emacs_themes" "gruvbox-dark-soft-theme.el"
+wget2dir "$gruvbox_repo" "$emacs_themes" "gruvbox-dark-medium-theme.el"
+wget2dir "$gruvbox_repo" "$emacs_themes" "gruvbox-dark-hard-theme.el"
 
 # also install emacs configuration for root
 sudo tic -x -o /root/.terminfo $emacsd/terminfo-custom.src
