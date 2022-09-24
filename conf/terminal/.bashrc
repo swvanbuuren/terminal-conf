@@ -56,7 +56,7 @@ parse_git_branch() {
 }
 
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;32m\]\u\[\033[00;32m\]@\h\[\033[01;34m\] \w \[\033[31m\]$(parse_git_branch)\[\033[00m\] \$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00;32m\]@\h\[\033[01;34m\] \w \[\033[31m\]$(parse_git_branch)\[\033[00m\] \$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch) \$ '
 fi
@@ -71,37 +71,8 @@ xterm*|rxvt*)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
 # for common 256 color terminals (e.g. gnome-terminal)
 export TERM=xterm-256color
-
-# some more ls aliases
-alias la='ls -A'
-alias ls='ls --color=auto -ahF'
-alias ll='ls --color=auto -lahF'
-alias l='ll'
-alias 'cd..'='cd ..'
-alias '..'='cd ..'
-alias emacs='TERM=xterm-emacs emacs -nw'
-alias emasc='TERM=xterm-emacs emacs -nw'
-alias eamcs='TERM=xterm-emacs emacs -nw'
-alias emcas='TERM=xterm-emacs emacs -nw'
-alias emcsa='TERM=xterm-emacs emacs -nw'
-alias 'sudoemacs'='sudo TERM=xterm-emacs emacs -nw'
-alias 'ipscan'='sudo arp-scan --interface=eth0 --localnet'
-alias pip=pip3
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -123,4 +94,3 @@ fi
 export PATH=$HOME/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
-

@@ -8,9 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# export QT_STYLE_OVERRIDE=cleanlooks
-export QT_QPA_PLATFORMTHEME=gtk2
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -23,8 +20,3 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-export QT_QPA_PLATFORMTHEME=gtk2
-# Ubuntu make installation of Ubuntu Make binary symlink
-PATH=/home/sietze/.local/share/umake/bin:$PATH
-
