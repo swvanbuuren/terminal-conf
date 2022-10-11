@@ -22,7 +22,7 @@ install_emacs_pkg() {
 }
 
   # make sure wget and emacs are installed
-sudo apt install emacs wget
+sudo apt install -y emacs wget
 cp ${emacs}/.emacs $HOME/.
 
 # create directories
