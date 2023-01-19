@@ -14,9 +14,9 @@ wget2file() { wget_github "$1" "-O $2"; }
 wget2dir() { wget_github "$1/$3" "-O $2/$3"; }
 install_emacs_pkg() {
     if [ -z "$3" ]; then
-        wget2file "${2}/${3}" "$emacsd/${1}_license"
-    else
         wget2file "${2}/LICENSE" "$emacsd/${1}_license"	
+    else
+        wget2file "${2}/${3}" "$emacsd/${1}_license"
     fi
     wget2dir "${2}" "$emacs_pkg" "${1}.el"
 }
