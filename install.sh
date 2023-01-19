@@ -23,5 +23,5 @@ fi
 
 # configure emacs
 if request "emacs"; then
-    . ${PWD}/scrips/emacs.sh
+    . ${PWD}/scripts/emacs.sh
 fi

@@ -22,7 +22,7 @@ install_emacs_pkg() {
 }
 
   # make sure wget and emacs are installed
-sudo apt install emacs wget
+sudo apt install -y emacs wget
 cp ${emacs}/.emacs $HOME/.
 
 # create directories
@@ -43,7 +43,7 @@ xterm-emacs|xterm with 24-bit direct color mode for Emacs,
 EOF
 tic -x -o ~/.terminfo $emacsd/terminfo-custom.src
 # acquire emacs version
-emacs_version=$(dpkg -s emacs | grep Version: | grep -oP '(?<=\d\:).*(?=\+)')
+emacs_version=$(dpkg -s emacs | grep Version: | grep -oP '(?<=\d\:).+?(?=\+)')
 # acquire major and minor emacs version
 IFS=. read -r emacs_major emacs_minor <<< $emacs_version
 emacs_major=$(($emacs_major+0))
@@ -51,17 +51,18 @@ emacs_minor=$(($emacs_minor+0))
 # if emacs supports true colors natively, make concurrent modifications to .bashrc
 if [[ $emacs_major -ge 27 && $emacs_minor -ge 1 ]]; then
     echo "emacs v27.1 or newer detected"
-    sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bashrc
+    sed -i 's/TERM=xterm-emacs/TERM=xterm-direct/g' $HOME/.bash_aliases
 fi
 # if emacs does not support true colors disable special commands in .bashrc
 if [[ $emacs_major -le 26 && $emacs_minor -lt 1 ]]; then
     echo "emacs older than v26.1 detectedm, true colors not supported!"
-    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
+    sed -i 's/TERM=xterm-emacs //g' $HOME/.bash_aliases
 fi
 # current terminal is incompatible with true colors
 if [[ $(toe | grep -L '\-direct') ]]; then
     echo "terminal incompatible with XTerm, true colors not supported!"
-    sed -i 's/TERM=xterm-emacs //g' $HOME/.bashrc
+    sed -i 's/TERM=xterm-emacs //g' $HOME/.bash_aliases
+    sed -i 's/TERM=xterm-direct //g' $HOME/.bash_aliases
 fi
 
 # required functions
